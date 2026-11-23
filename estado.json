@@ -1,1 +1,11 @@
-{}
+{
+ "chequeos": {
+  "backend": {
+   "fallas_seguidas": 0
+  },
+  "web": {
+   "fallas_seguidas": 0
+  }
+ },
+ "historial": []
+}
