@@ -109,3 +109,22 @@ def test_si_ningun_canal_funciona_no_marca_avisado(monkeypatch, tmp_path):
 def test_revisar_backend(monkeypatch, codigo, cuerpo, ok):
     monkeypatch.setattr(v, "_pedir", lambda *a, **k: (codigo, {}, cuerpo))
     assert v.revisar_backend("x").ok is ok
+
+
+@pytest.mark.parametrize(
+    "cuerpo,enviado",
+    [
+        (b"<p>text to send: *CAIDO* ... Error: HTTP 404<p><b>Message queued.</b>", True),
+        (b"<p>APIKey is invalid. You need to get a new one", False),
+        (b"<p>Error: phone number not activated", False),
+    ],
+)
+def test_whatsapp_solo_cuenta_si_callmebot_lo_deja_en_cola(monkeypatch, cuerpo, enviado):
+    monkeypatch.setenv("CALLMEBOT_TELEFONO", "+56900000000")
+    monkeypatch.setenv("CALLMEBOT_APIKEY", "123")
+    monkeypatch.setattr(v, "_pedir", lambda *a, **k: (200, {}, cuerpo))
+    if enviado:
+        v.enviar_whatsapp("Error: HTTP 404")
+    else:
+        with pytest.raises(RuntimeError):
+            v.enviar_whatsapp("x")

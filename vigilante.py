@@ -146,8 +146,11 @@ def enviar_whatsapp(texto: str) -> None:
         }
     )
     codigo, _, cuerpo = _pedir(f"https://api.callmebot.com/whatsapp.php?{consulta}", 30)
+    # CallMeBot repite el texto enviado en su respuesta: por eso no se busca la
+    # palabra "error" (el propio aviso la trae). Solo cuenta como enviado si
+    # confirma que lo dejo en cola.
     respuesta = cuerpo.decode("utf-8", "replace").lower()
-    if codigo != 200 or "error" in respuesta or "apikey is invalid" in respuesta:
+    if codigo != 200 or not ("message queued" in respuesta or "message sent" in respuesta):
         raise RuntimeError(f"CallMeBot respondio HTTP {codigo}: {respuesta[:200]}")
 
 
