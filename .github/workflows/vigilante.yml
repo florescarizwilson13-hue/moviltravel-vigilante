@@ -3,6 +3,8 @@ name: Vigilante MovilTravel
 on:
   schedule:
     # Cada 10 minutos, las 24 horas (GitHub puede atrasarlo algunos minutos).
+    # Si se pausa y reactiva el workflow, volver a subir este archivo para que
+    # GitHub retome el horario.
     - cron: "3-59/10 * * * *"
   workflow_dispatch:
     inputs:
