@@ -1,11 +1,14 @@
 {
  "chequeos": {
   "backend": {
-   "fallas_seguidas": 0
+   "caido_desde": "2026-11-23T14:25:42.160123+00:00",
+   "fallas_seguidas": 1,
+   "ultimo_error": "HTTP 404: Not Found"
   },
   "web": {
    "fallas_seguidas": 0
   }
  },
- "historial": []
+ "historial": [],
+ "ultimo_resumen": "2026-11-23"
 }
