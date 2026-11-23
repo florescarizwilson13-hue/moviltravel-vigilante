@@ -1,0 +1,55 @@
+name: Vigilante MovilTravel
+
+on:
+  schedule:
+    # Cada 10 minutos, las 24 horas (GitHub puede atrasarlo algunos minutos).
+    - cron: "3-59/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "normal | resumen (fuerza el correo semanal) | prueba_canales"
+        default: normal
+      url_backend:
+        description: "Solo para pruebas: otra URL de backend (vacio = la real)"
+        default: ""
+      url_web:
+        description: "Solo para pruebas: otra URL de la app web (vacio = la real)"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vigilante
+  cancel-in-progress: false
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revisar backend, base y app web
+        id: revisar
+        env:
+          MODO: ${{ inputs.modo || 'normal' }}
+          URL_BACKEND: ${{ inputs.url_backend }}
+          URL_WEB: ${{ inputs.url_web }}
+          SMTP_USUARIO: ${{ secrets.SMTP_USUARIO }}
+          SMTP_CLAVE: ${{ secrets.SMTP_CLAVE }}
+          CORREO_DESTINO: ${{ secrets.CORREO_DESTINO }}
+          CALLMEBOT_TELEFONO: ${{ secrets.CALLMEBOT_TELEFONO }}
+          CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+        run: python3 vigilante.py
+
+      - name: Guardar estado
+        if: always()
+        run: |
+          if git diff --quiet -- estado.json; then echo "Sin cambios de estado."; exit 0; fi
+          git config user.name "vigilante-moviltravel[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add estado.json
+          git commit -m "estado: $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1
