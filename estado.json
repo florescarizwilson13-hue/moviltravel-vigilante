@@ -1,7 +1,9 @@
 {
  "chequeos": {
   "backend": {
-   "fallas_seguidas": 0
+   "caido_desde": "2026-11-24T23:24:03.102360+00:00",
+   "fallas_seguidas": 1,
+   "ultimo_error": "HTTP 502: <!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-wid"
   },
   "web": {
    "fallas_seguidas": 0
