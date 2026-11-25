@@ -1,9 +1,7 @@
 {
  "chequeos": {
   "backend": {
-   "caido_desde": "2026-11-24T23:24:03.102360+00:00",
-   "fallas_seguidas": 1,
-   "ultimo_error": "HTTP 502: <!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-wid"
+   "fallas_seguidas": 0
   },
   "web": {
    "fallas_seguidas": 0
@@ -15,6 +13,12 @@
    "caido_desde": "2026-11-23T14:25:42.160123+00:00",
    "clave": "backend",
    "volvio": "2026-11-23T14:26:58.775894+00:00"
+  },
+  {
+   "avisado": false,
+   "caido_desde": "2026-11-24T23:24:03.102360+00:00",
+   "clave": "backend",
+   "volvio": "2026-11-25T05:35:35.676616+00:00"
   }
  ],
  "ultimo_resumen": "2026-11-23"
